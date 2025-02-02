@@ -1,0 +1,136 @@
+---
+title: "Homwork1 "
+author: "Homework01Gr#" #change to your group number
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### NOTE: only those who contributes and fully participates in the work will get credit
+
+**Scribe:**
+
+**Moderator:**
+
+**All contributors:**
+
+
+
+
+
+
+## Q1:
+
+The barista at ``t-test espresso'' is told that the optimal serving temperature for coffee is 180 F. Five temperatures are taken of the served coffee: 175, 185, 170, 184, and 175 degrees. 
+
+TASK: Find a 90% confidence interval of the form $(-\infty, b)$ for the mean temperature.(one side CI)
+
+DATA:
+```{r}
+temp <- c(175, 185, 170, 184, 175)
+n <- length(temp)
+alpha <- 0.1
+x_bar <- mean(temp)
+s <- sd(temp)
+
+```
+
+## Part 1
+
+Since the number of samples is not large enough, we calculate the one-sided CI using $t$-distribution:
+Type the formula below
+
+$ CI_{Upper} = \bar{x} + t_{\alpha}_{df}\frac{s}{sqrt{n}}\$
+
+$ t_{\alpha}_{df} = \frac{\bar{x}-\mu}{\frac{s}{sqrt{n}}}\$
+
+
+## Part2
+Compute one sided CI below
+
+The corresponding t score is:
+```{r}
+t_score <- qt(1-alpha, n-1);t_score
+
+CI_Upper = x_bar + t_score*(s/sqrt(n));CI_Upper
+
+```
+
+## Part 3
+Alternatively, using t.test with alt="less" will give this type of one-sided confidence interval:
+```{r}
+#Lets Test it.
+
+t.test(temp,alternative = c("less"),conf.level = 0.90)
+```
+
+
+
+Verzani BOOK,  Problem 3.16,  3.17,  3.31,   8.6,   8.8,   8.12,  8.19,
+Devore BOOK : section 7.2 problem 16; Sec 7.3: problem 32
+
+3.16 The data set twins (UsingR) contains IQ scores for pairs of identical twins who were separated at birth. Make a scatter plot of the variables Foster and Biological. Based on the scatter plot, predict what the Pearson correlation coefficient will be and whether the Pearson and Spearman coefficients will be similar. Check your guesses.
+##Q2  Verzani Problem 3.16
+```{r V3.16}
+require(UsingR)
+
+data("twins")
+x = twins$Foster
+y = twins$Biological
+plot(x,y, main="Question 3.16",
+   xlab="Forster ", ylab="Biological", pch=19)
+
+#The person correlation coefficient is a way to show the linear relationship between two varibles.
+#It is the ratio between the covariance of two variables and the product of their standard deviations
+#The data appears linear from the plot.
+#Spear man is similar to persons, but describe monotonic relationships which is similar to linear relationships but outliers become very apparent. There are no outliers really so they should be around the same. 
+covTwins = cov(x,y);covTwins
+sdTwins = sd(x)*sd(y);sdTwins
+#Guess Positive slope around 1
+myPCC = covTwins/sdTwins; myPCC
+#Spears should be around the same.
+
+PCC = cor(x, y, method = 'pearson');PCC
+Spear = PCC = cor(x, y, method = 'spear');Spear
+
+```
+##Q Verzani Problem 3.17
+The state.x77 data set contains various information for each of the fifty United States. We wish to explore possible relationships among the variables. First, we make the data set easier to work with by turning it into a data frame.
+x77 <- data.frame(state.x77);
+Now, make scatter plots of Population and Frost; Population and Murder; Population and Area; and Income and HS.Grad. Do any relationships appear linear? Are there any surprising correlations?
+
+```{r 3.17}
+x77 <- data.frame(state.x77);
+
+summary(x77)
+
+#We can use par(mfrow = c(2, 2)) to make 1 canvas.
+#par(mfrow = c(2, 2))
+#pch "point character?"
+plot(x77$Population,x77$Frost, main="Population and Frost",
+   xlab="Population ", ylab="Frost", pch=19)
+
+plot(x77$Population,x77$Murder, main="Population and Murder",
+   xlab="Population ", ylab="Murder", pch=18)
+
+plot(x77$Population,x77$Area, main="Population and Area",
+   xlab="Population ", ylab="Area", pch=17)
+
+plot(x77$Income,x77$HS.Grad, main="Population and HS.Grad",
+   xlab="Population ", ylab="HS.Grad", pch=16)
+
+# This resets the canvas settings
+#par(mfrow = c(1, 1))
+
+#How do we interupt this? 
+
+```
+
+##More Problems here 
+continue to solve the following problems in  the format of the layout of V3.16)
+
+Verzani BOOK,  Problem 3.16,  3.17,  3.31,   8.6,   8.8,   8.12,  8.19,
+Devore BOOK : section 7.2 problem 16; Sec 7.3: problem 32
