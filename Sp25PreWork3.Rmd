@@ -1,0 +1,112 @@
+---
+title: "PreWK3"
+author: "Roy, Aniket" # change this line to have your name hear
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Note: Please turn in both RMD file and pdf file to Canvas**
+
+
+## PreWork 3
+
+
+##Pratice 1
+
+Natural cork in wine bottles is subject to deterioration, and as a result wine in such bottles may experience contamination. The article ``Effects of Bottle Closure Type on Consumer Perceptions of Wine Quality'' (Amer. J. of Enology and Viticulture, 2007: 182–191) reported that, in a tasting of commercial chardonnays, 16 of 91 bottles were considered spoiled to some extent by cork-associated characteristics.
+
+TASK: Does this data provide strong evidence for concluding that more than 15% of all such bottles are contaminated in this way? Let’s carry out a test of hypotheses using a significance level of .10.
+
+DATA:
+```{r}
+n <- 91
+n_spoiled <- 16
+p_0 <- 0.15
+q_0 <- 1 - p_0
+```
+
+##According the HT procedure to design a hypothesis test for p ( complete 7 steps below)
+
+1. $p =$ the true proportion of all commercial chardonnay bottles considered spoiled to some extent by cork-associated characteristics.
+
+2. The null hypothesis is ?
+
+**Answer:**
+$H_{0}$ : p = 0.15
+
+
+3. The alternative hypothesis is ?
+**Answer:**
+$H_{a}$ : p > 0.15
+
+4. Since $np_0 = 91(.15) > 10$ and $nq_0 = 91(.85) = 77.35 > 10$, the large-sample $z$ test can be used. 
+The test statistic value is
+
+```{r}
+# type the code here
+# Given data
+n <- 91
+n_spoiled <- 16
+p_0 <- 0.15
+q_0 <- 1 - p_0
+
+# Compute sample proportion
+p_hat <- n_spoiled / n
+
+# Compute standard error
+SE <- sqrt(p_0 * q_0 / n)
+
+# Compute z-score
+z <- (p_hat - p_0) / SE
+z
+```
+
+
+5. The form of $H_a$ implies that an upper-tailed test is appropriate: 
+
+rejection region is?
+```{r}
+# type the code here
+# Significance level
+alpha <- 0.10
+
+# Compute critical value
+z_critical <- qnorm(1 - alpha)
+
+# Display rejection region
+z_critical
+```
+
+6. then $z$ test statistic value is ?
+```{r}
+# type the code here
+# Given data
+n <- 91
+n_spoiled <- 16
+p_0 <- 0.15
+q_0 <- 1 - p_0
+
+# Compute sample proportion
+p_hat <- n_spoiled / n
+
+# Compute standard error
+SE <- sqrt(p_0 * q_0 / n)
+
+# Compute z-score (test statistic)
+z <- (p_hat - p_0) / SE
+z
+```
+
+7. decision:
+
+**Answer:**
+If z>1.28, we reject $H_{0}$. 
+If z <= 1.28, we fail to reject $H_{0}$
+
+The computed value of z is 0.6899094. Hence, the decision is "we fail to reject $H_{0}$. Or in other words, we cannot accept the claim that more than 15% of the commercial chardonnay bottles are contaminated in this way at 10% significance level." 
+
+
