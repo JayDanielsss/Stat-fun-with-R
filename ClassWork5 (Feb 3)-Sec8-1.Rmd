@@ -1,0 +1,246 @@
+---
+title: "ClassWork5 Section 8.1"
+author: "" #change to your group number
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+##Practice 1
+(Example 8.1 continued): 
+Let us use the same experiment and test statistic $X$ as previously described in the automobile bumper problem but now consider the rejection region $R_9 = \{9,10,...,20\}$. $X$ still has a binomial distribution with parameters $n = 20$ and $p = .25$.
+
+TASK: Find type I ($\alpha$) and type II ($\beta$) errors.
+
+DATA:
+```{r}
+n <- 20
+p0 <- .25
+```
+
+##Part1
+Type I error, $\alpha$, is calculated as follows, type the formul below:
+\begin{align*}
+\alpha =& P(\text{type I error}) = P(\text{$H_0$ is rejected when it is true})\\
+=& P(X \ge 9 \;\text{when}\; X \sim Bin(20, .25)) = 1 - B(8; 20, .25)
+\end{align*}
+
+
+##Part 2
+Calculate Type I error
+```{r}
+alpha <- 1 - pbinom(8, n, p0)
+alpha
+```
+
+Type II errors, $\beta$, for $p=.3, p=.5$ are
+\begin{align*}
+\beta(.3) =& P(\text{type II error when $p = .3$})\\
+=& P(\text{$H_0$ is not rejected when it is false because $p=.3$})\\
+=& P(X \le 8 \; \text{when}\; X \sim Bin(20, .3)) = B(8; 20, .3)\\
+\beta(.5) =& B(8; 20, .5)
+\end{align*}
+
+##Part 3
+Calculut Type II error
+```{r}
+p_beta <- c(.3, .5) 
+beta <- pbinom(8, n, p_beta)
+beta
+
+```
+
+Read yourself: Here, the type I error probability has been decreased by using the new rejection region. However, a price has been paid for this decrease. $\beta$’s are larger than the corresponding error probabilities .772 and .132 for the region $R_8$. In retrospect, this is not surprising; $\alpha$ is computed by summing over probabilities of test statistic values in the rejection region, whereas $\beta$ is the probability that $X$ falls in the complement of the rejection region. Making the rejection region smaller must therefore decrease $\alpha$ while increasing $\beta$ for any $p > .25$.
+
+
+##Practice 2
+
+The drying time of a certain type of paint under specified test conditions is known to be normally distributed with mean value 75 min and standard deviation 9 min. Chemists have proposed a new additive designed to decrease average drying time. It is believed that drying times with this additive will remain normally distributed with $\sigma = 9$. Because of the expense associated with the additive, evidence should strongly suggest an improvement in average drying time before such a conclusion is adopted. Let $\mu$ denote the true average drying time when the additive is used. The appropriate hypotheses are 
+
+$$H_0: \mu_0 = 75  \quad \text{versus} \quad H_a: \mu_A < 75 = \mu_0$$.
+
+## Design the Hypothesis Test
+
+Experimental data is to consist of drying times from $n = 25$ test specimens. Let $X_1, ..., X_{25}$ denote the 25 drying times—a random sample of size 25 from a normal distribution with mean value $\mu$ and standard deviation $\sigma = 9$. 
+
+The sample mean dying time $\bar{X}$ then has a normal distribution with expected value $\mu_{\bar{X}} = \mu$ and standard deviation $\sigma_{\bar{X}} = \frac{\sigma}{\sqrt{n}} = \frac{9}{\sqrt{25}} = \frac{9}{5} = 1.80$. Thus  
+
+$$
+\bar{X} \; \thicksim \mathcal{N}\left(\mu,\sigma = \frac{9}{5}\right)
+$$
+
+
+When $H_0$ is true, $\mu_{\bar{X}} = 75$, so only an $\bar{x}$ value substantially less than 75 would strongly contradict $H_0$. 
+
+These are the two competing hypotheses:
+$$ 
+\color{blue}{H_0:  \bar{X} \; \thicksim \mathcal{N}\left(\mu_0,\sigma = \frac{9}{5}\right),   \; \text{with} \; \mu_0 = 75}
+\hspace{1in}
+\color{red}{H_A: \bar{X} \; \thicksim \mathcal{N}\left(\mu_A,\sigma = \frac{9}{5}\right),   \; \text{with} \; \mu_A < \mu_0}
+$$
+\vspace{1.7in}
+
+
+A reasonable rejection region has the form $\bar{x} \le c$, where the cutoff value $c$ is suitably chosen. 
+Consider the choice $c = 70.8$.
+
+The test procedure consists of test statistic $\bar{X}$ and rejection region $\bar{x} \le 70.8$. 
+
+Because the rejection region consists only of small values of the test statistic, the test is said to be lower-tailed.
+
+TASK: Find type I ($\alpha$) and type II ($\beta$) errors.
+
+DATA:
+```{r}
+n <- 25
+s <- 9
+s_x <- s/sqrt(n)
+mu <- 75
+c <- 70.8
+```
+
+\textbf{Type I Error}, $\alpha$, is calculated as follows:
+
+\begin{align*}
+\alpha =& \text{type I error}  = \mathbf{P(R|H_0)} = P(\text{$H_0$ is rejected when it is true})\\
+=& P\left(\text{$\bar{X}  \le 70.8$ when $\bar{X}  \sim \mathcal{N}\left(\mu_0=75,\sigma = \frac{9}{5}\right)$}\right)\\
+=& \Phi \left( \frac{70.8 - 75}{1.8} \right) = pnorm\left(\frac{70.8 - 75}{1.8} \right) = pnorm\left(70.8, 75, 1.8\right)
+\end{align*}
+
+##Part 1
+Compute Type I error
+```{r}
+alpha = pnorm(c,mu,1.8);alpha
+
+
+```
+
+
+
+\textbf{Type II Error} There is a different $\beta$ for each different $\mu_A$. For example, $\beta$ for $\mu_A=72$ is calculated as follows:
+
+$$ 
+\color{blue}{H_0:  \bar{X} \; \thicksim \mathcal{N}\left(\mu_0,\sigma = \frac{9}{5}\right),   \; \text{with} \; \mu_0 = 75}
+\hspace{1in}
+\color{red}{H_A: \bar{X} \; \thicksim \mathcal{N}\left(\mu_A,\sigma = \frac{9}{5}\right),   \; \text{with} \; \mathbf{\mu_A = 72}}
+$$
+
+
+\vspace{2in}
+
+\begin{align*}
+\beta(72) =& \left[\text{type II error when } \mu_A = 72 \right] = \mathbf{P(A|H_A)} =\\
+=& P(\text{$H_0$ is not rejected when it is false because $\mu = 72$})\\
+=& P\left(\text{$\bar{X} > 70.8$ when $\mathcal{N}\left(\mu_A=72,\sigma = \frac{9}{5}\right)$}\right)\\
+=& \Phi \left( 1- \frac{70.8 - 72}{1.8} \right) = pnorm\left( 1- \frac{70.8 - 72}{1.8} \right) = 
+pnorm\left( 70.8, 72,1.8, lower.tail = FALSE \right)
+\end{align*}
+
+##Part 2
+Compute Type II error
+```{r}
+
+beta = pnorm(70.8, 72,1.8, lower.tail = FALSE);beta
+```
+
+For the specified test procedure, only 1% of all experiments carried out as described will result in $H_0$ being rejected when it is actually true. 
+
+However, the chance of a type II error is very large when $\mu = 72$ (only a small departure from $H_0$), somewhat less when $\mu = 70$, and quite small when $\mu = 67$ (a very substantial departure from $H_0$). 
+
+Notice that $\alpha$ is computed using the probability distribution of the test statistic when $H_0$ is true, whereas determination of $\beta$ requires knowing the test statistics distribution when $H_0$ is false.
+
+
+
+## Run the test
+
+You are given the $n=25$ tests specimens
+
+
+67 67 68 66 71 67 68 71 71 67 70 71 69 69 70 67 68 71 66 67 71 70 69 66 65
+
+
+
+To load the list in a vector x, we can use scan()
+```{r}
+# copy the list by selecting the 25 values
+x <- scan() 
+# now paste the 25 values, and hit return
+```
+
+```{r}
+x <- c(67,67,68,66,71,67,68,71,71,67,70,71,69,69,70,67,68,71,66,67,71,70,69,66,65)
+```
+
+
+
+
+The test statistics is $\bar{X}$, since we are questioning the true value of $\mu$.
+
+```{r}
+xbar <- mean(x); xbar
+```
+
+### Result of the Hypotheses test
+
+Recall that the rejection region is 
+$$
+\text{Rejection interval } = (0, 70.8) 
+$$
+
+The test depends on the answer to the following question:
+
+\color{red}{Is $\bar{x}= 68.48$ in the Rejection interval?}
+
+IF \textbf{YES}  then  \textbf{REJECT} THE NULL HYPOTHESIS
+
+IF \textbf{NO} then \textbf{FAIL TO REJECT} THE NULL HYPOTHESIS
+
+
+##Practice 3
+(Practice 2 continued): 
+The use of cutoff value $c = 70.8$ in the paint-drying example resulted in a very small value of $\alpha (.01)$ but rather large $\beta$’s. Consider the same experiment and test statistic $\bar{X}$ with the new rejection region $\bar{x} \le 72$. $\bar{X}$ is still normally distributed with mean value $\mu_{\bar{X}} = \mu$ and $\sigma_{\bar{X}} = 1.8$.
+
+TASK: Find type I ($\alpha$) and type II ($\beta$) errors.
+
+DATA:
+```{r}
+n <- 25
+s <- 9
+s_x <- s/sqrt(n)
+mu <- 75
+c <- 72
+```
+
+Type I error, $\alpha$, is calculated as follows:
+
+\begin{align*}
+\alpha =& \text{type I error}  = \mathbf{P(R|H_0)} = P(\text{$H_0$ is rejected when it is true})\\
+=& P\left(\text{$\bar{X}  \le 72$ when $\bar{X}  \sim \mathcal{N}\left(\mu_0=75,\sigma = \frac{9}{5}\right)$}\right)\\
+=& \Phi \left( \frac{72 - 75}{1.8} \right) = pnorm\left(\frac{72 - 75}{1.8} \right) = pnorm\left(72, 75, 1.8\right)
+\end{align*}
+
+##Part1 
+Compute Type I error
+```{r}
+alpha = pnorm(c,mu,1.8);alpha
+```
+
+
+
+
+##Part 2 
+Compute Type II error
+Lets use 73 as an alternative mean. 
+```{r}
+beta = pnorm(c, 73,1.8, lower.tail = FALSE);beta
+
+```
+
+The change in cutoff value has made the rejection region larger (it includes more $\bar{x}$ values), resulting in a decrease in $\beta$ for each fixed $\mu$ less than 75. However, $\alpha$ for this new region has increased from the previous value .01 to approximately .05. If a type I error probability this large can be tolerated, though, the second region ($c = 72$) is preferable to the first($c = 70.8$) because of the smaller $\beta$’s.
+
+
