@@ -128,9 +128,83 @@ plot(x77$Income,x77$HS.Grad, main="Population and HS.Grad",
 #How do we interupt this? 
 
 ```
+##Q  Verzani Problem 3.31
+The data set coins (UsingR) contains the number of coins in a change bin and the years they were minted. Do the following:
+1. How much money is in the change bin?
+```{r 3.31}
+data(coins)
+View(coins)
+sum(coins$value)
 
+```
+2. Make a barplot of the years. Is there a trend?
+```{r 3.31part2}
+year_count = table(coins$year);year_count
+barplot(year_count, main = "Number of Coins by Year", xlab="Year", ylab="Count")
+#The trend seems to be the new the year the more the coins. 
+```
+3. Use cut to construct a barplot by decade.
+```{r 3.31Part3}
+decade = cut(coins$year, breaks=seq(1920, 2010, by=10),labels=c("1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s"))
+
+barplot(table(decade), main = "Coins by Decade", xlab = "Decade", ylab = "Count")
+
+
+
+
+```
+4. Make a contingency table of the year and the value. Does it look like the two variables are associated? Why?
+
+```{r 3.31Part4}
+
+contingency_table = table(coins$year, coins$value);contingency_table
+#It appears a lot more pennies are made, especially in the later years.
+```
+##Q 8.6
+
+ A student wishes to find the proportion of left-handed people at her college. She surveys 100 fellow students and finds that only 5 are left-handed. If she computed a 95% confidence interval would it contain the value of p = 1/10?
+ 
+```{r 8.6}
+x <- 5; n <- 125
+phat <- x/n
+alpha <- 1 - .95
+zstar <- qnorm(1 - alpha/2)
+SE <- sqrt(phat * (1 - phat) / n)
+MOE <- zstar * SE
+PI = phat + c(-1, 1) * MOE;PI
+
+1/10
+
+#The interval doesn't contain .1
+
+```
+##Q 8.8
+A New York Times article from October 9, 2003, contains this explanation
+about an exit survey for a California recall election:
+In theory, in 19 cases out of 20, the results from such polls should differ by no more than plus or minus two percentage points from what would have been obtained by seeking to in- terview everyone who cast a ballot in the recall election.
+Assume a simple random sample and pb = .54. How big was n?
+
+```{r 8.8}
+pbar = .54
+CL = 19/20
+alpha = 1 - CL
+zstar = qnorm(1 - alpha/2)
+#We want to find n using MOE
+n = ceiling((pbar*(1-pbar))/(.02/zstar)^2); n
+
+```
+##Q 8.12
+
+```{r 8.12}
+
+
+
+```
 ##More Problems here 
 continue to solve the following problems in  the format of the layout of V3.16)
 
 Verzani BOOK,  Problem 3.16,  3.17,  3.31,   8.6,   8.8,   8.12,  8.19,
 Devore BOOK : section 7.2 problem 16; Sec 7.3: problem 32
+
+
+
