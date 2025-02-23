@@ -1,10 +1,8 @@
 ---
 title: "Homwork2-Exam 1 Preparation HW "
-author: "Homework02Gr6"
+author: "Homework02Gr#" #change to your group number
 date: "`r Sys.Date()`"
-output:
-  word_document: default
-  pdf_document: default
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -33,645 +31,242 @@ Please finish all 14 problems step by step, rather than using the advance functi
 
 
 ##Q1 Devore 2nd edition 7.1.5
-```{r D7.1.5}
-#Given standard deviation
-sigma <-0.75
+Assume that the helium porosity (in percentage) of coal sam- ples taken from any particular seam is normally distributed with true standard deviation .75.
+a. Compute a 95% CI for the true average porosity of a cer-
+tain seam if the average porosity for 20 specimens from
+the seam was 4.85.
+```{r D7.1.5 a}
+alpha = 0.05
+n = 20
+sd = .75
+xbar = 4.85
 
-# (a) Compute 95% CI for true average porosity (n = 20, sample mean = 4.85)
-n1 <- 20
-xbar1 <- 4.85
-alpha1 <- 0.05  # 95% CI
-z1 <- qnorm(1 - alpha1/2)  # Z-score for 95% CI
+z_alpha = 1.96
 
-margin_error1 <- z1 * (sigma / sqrt(n1))
-CI_95 <- c(xbar1 - margin_error1, xbar1 + margin_error1)
-print("95% Confidence Interval is:") 
-CI_95
+CL_Lower = xbar - z_alpha*(sd/sqrt(n));CL_Lower
+CL_Upper = xbar + z_alpha*(sd/sqrt(n));CL_Upper
+```
 
-## (b) Compute 98% CI for another seam
+b. Compute a 98% CI for true average porosity of another
+seam based on 16 specimens with a sample average poros-
+ity of 4.56.
+```{r D7.1.5 b}
 
-n2 <- 16
-xbar2 <- 4.56
-alpha2 <- 0.02  # 98% CI
-z2 <- qnorm(1 - alpha2/2)  # Z-score for 98% CI
+n = 16
+sd = .75
+xbar = 4.56
 
-margin_error2 <- z2 * (sigma / sqrt(n2))
-CI_98 <- c(xbar2 - margin_error2, xbar2 + margin_error2)
-print("98% Confidence Interval is:") 
-CI_98
+z_alpha = 2.326
+
+CL_Lower = xbar - z_alpha*(sd/sqrt(n));CL_Lower
+CL_Upper = xbar + z_alpha*(sd/sqrt(n));CL_Upper
+```
+c. How large a sample size is necessary if the width of the
+95% interval is to be .40?
+```{r D7.1.5 c}
+z_alpha = 1.96
+sd = .75
+w = .40
+#width is margin of error times 2
+n = (2*(z_alpha)*(sd/w))^2;ceiling(n)
 
 
-## (c) Sample Size for 95% CI Width of 0.40
-width <- 0.40  # Total width of CI
-margin_error_target <- width / 2  # Half-width
+```
+d. What sample size is necessary to estimate true average
+porosity to within .2 with 99% confidence?
+```{r D7.1.5 d}
+z_alpha = 2.576
+sd = .75
+E = .2
+#within means marigin of error
+n = ((z_alpha)*(sd/w))^2;ceiling(n)
 
-# Solve for sample size: n = (z*sigma / margin_error)^2
-n_required_95 <- (z1 * sigma / margin_error_target)^2
-n_required_95 <- ceiling(n_required_95)  # Round up to nearest whole number
-print("Required Sample Size is: ")
-n_required_95
-
-## (d) Sample Size for 99% CI with Width 0.2
-
-width_99 <- 0.2  # Total width
-margin_error_target_99 <- width_99 / 2  # Half-width
-alpha3 <- 0.01  # 99% CI
-z3 <- qnorm(1 - alpha3/2)  # Z-score for 99% CI
-
-n_required_99 <- (z3 * sigma / margin_error_target_99)^2
-n_required_99 <- ceiling(n_required_99)  # Round up to nearest whole number
-print("Required Sample Size is: ")
-n_required_99
 
 ```
 
-```{r D7.2.13}
 
-## Part (a)
+##Q2 Devore 2nd edition 7.2.13
+The article “Gas Cooking, Kitchen Ventilation, and Exposure to Combustion Products” (Indoor Air, 2006: 65–73) reported that for a sample of 50 kitchens with gas cooking appliances monitored during a one-week period,
+the sample mean CO2 level (ppm) was 654.16, and the sam- ple standard deviation was 164.43.
+a. Calculate and interpret a 95% (two-sided) confidence
+interval for true average CO2 level in the population of
+all homes from which the sample was selected.
+b. Suppose the investigators had made a rough guess of 175 for the value of s before collecting data. What sample size would be necessary to obtain an interval width of 50
+ppm for a confidence level of 95%?
+```{r D7.2.13 a}
+n = 50
+xbar = 654.16
+s = 164.43
+alpha = 1 - .95
+#Two sided so alpha is divided by 2
+z_alpha = qnorm(alpha/2, lower.tail = FALSE);z_alpha
 
-# Given data
-xbar <- 654.16  # Sample mean
-s <- 164.43  # Sample standard deviation
-n <- 50  # Sample size
-df <- n - 1  # Degrees of freedom
-alpha <- 0.05  # 95% confidence level
-
-## Since the sample standard deviation is given and the population standard deviation is unknown, we must estimate it using sample standard distribution. Now we can use normal distribution because the sample size is 50 (>30) but even for larger n, the t-distribution is more accurate using s instead of sigma
-
-# Compute critical t-value
-critical_t <- qt(1 - alpha/2, df)
-
-# Compute margin of error
-margin_error <- critical_t * (s / sqrt(n))
-
-# Compute confidence interval
-CI_95 <- c(xbar - margin_error, xbar + margin_error)
-CI_95
-
-##Part (b)
-sigma_est <- 175  # Estimated standard deviation
-ME <- 50 / 2  # Margin of error (half of interval width)
-alpha <- 0.05  # 95% confidence level
-z_alpha <- qnorm(1 - alpha/2)  # Z-score for 95% CI
-
-# Compute required sample size
-n_required <- ( (z_alpha * sigma_est) / ME )^2
-n_required <- ceiling(n_required)  # Round up to nearest whole number
-print("The sample size is : ")
-n_required
+CL_Lower = xbar - z_alpha*(s/sqrt(n));CL_Lower
+CL_Upper = xbar + z_alpha*(s/sqrt(n));CL_Upper
 ```
 
+```{r D7.2.13 b}
+w = 50
+xbar = 654.16
+s = 175
+alpha = 1 - .95
+#Two sided so alpha is divided by 2
+z_alpha = qnorm(alpha/2, lower.tail = FALSE);z_alpha
+
+n = (2*(z_alpha)*(s/w))^2;ceiling(n)
+```
+##Q3 Devore 2nd edition 7.2.20
+The Associated Press (October 9, 2002) reported that in a survey of 4722 American youngsters aged 6 to 19, 15% were seriously overweight (a body mass index of at least 30; this index is a measure of weight relative to height). Calculate and interpret a confidence interval using a 99% confidence level for the proportion of all American young- sters who are seriously overweight.
 ```{r D7.2.20}
-# Given data
-phat <- 0.53  # Sample proportion
-n <- 2343  # Sample size
-alpha <- 0.01  # 99% confidence level
-z_alpha <- qnorm(1 - alpha/2)  # Critical z-value for 99%
-
-# Compute standard error
-SE <- sqrt((phat * (1 - phat)) / n)
-
-# Compute margin of error
-ME <- z_alpha * SE
-
-# Compute confidence interval
-CI_99 <- c(phat - ME, phat + ME)
-print ("99% confidence interval is :")
-CI_99
-
-## Sample Size Calculation for CI Width ≤ 0.05
-# Desired margin of error
-ME_target <- 0.05 / 2  # Half of the total width
-p_star <- 0.5  # Conservative estimate for p
-
-# Compute required sample size
-n_required <- ( (z_alpha / ME_target)^2 ) * (p_star * (1 - p_star))
-n_required <- ceiling(n_required)  # Round up
-print("Required sample size is :")
-n_required
-```
-
-```{r D7.3.36}
-# Given values
-# Given data
-mean_x <- 370.69
-s <- 24.36
-n <- 26
-alpha <- 0.05  # For a 95% confidence level
-
-# Degrees of freedom
-df <- n - 1
-
-# t-value for 95% confidence level
-t_value <- qt(1 - alpha, df)
-
-# Calculate the upper confidence bound
-upper_conf_bound <- mean_x + t_value * (s / sqrt(n))
-upper_conf_bound
-
-##Part (b)
-# Calculate the upper prediction bound for a single worker
-upper_pred_bound <- mean_x + t_value * sqrt(s^2 * (1 + 1/n))
-upper_pred_bound
-
-##Part (c)
-# Calculate the prediction interval for the average of two new workers
-t_value_new <- qt(1 - alpha/2, n + 1)
-
-# Calculate the 95% two-sided interval
-lower_pred_interval <- mean_x - t_value_new * (s / sqrt(2))
-upper_pred_interval <- mean_x + t_value_new * (s / sqrt(2))
-
-c(lower_pred_interval, upper_pred_interval)
-```
-
-Devore problem D8.1.13
-
-Part (a) : We want to test if the scale is calibrated correctly, meaning if the true average weight reading is equal to 10 kg. The hypotheses are:
-
-- Null Hypothesis (\( H_0 \)): \( m = 10 \) kg (the scale is correctly calibrated)
-- Alternative Hypothesis (\( H_A \)): \( m \neq 10 \) kg (the scale is not correctly calibrated)
-
-```{r D8.1.13 partb}
-
-# Given data
-x_bar <- 9.85  # sample mean
-mu_0 <- 10     # hypothesized population mean
-sigma <- 0.200 # population standard deviation
-n <- 25        # sample size
-
-# Calculate Z score
-z_score <- (x_bar - mu_0) / (sigma / sqrt(n))
-
-# Calculate P-value for two-tailed test
-p_value <- 2 * (1 - pnorm(abs(z_score)))
-p_value
-```
-
-At a significance level of 0.01, we reject the null hypothesis.
-
-```{r D8.1.13 partc}
-# New true means
-m1 <- 10.1
-m2 <- 9.8
-
-# Z-scores for m1 and m2
-z_score_m1 <- (m1 - mu_0) / (sigma / sqrt(n))
-z_score_m2 <- (m2 - mu_0) / (sigma / sqrt(n))
-
-# Calculate the probability of not rejecting the null hypothesis for m1 and m2
-prob_m1 <- pnorm(abs(z_score_m1)) - pnorm(-abs(z_score_m1))
-prob_m2 <- pnorm(abs(z_score_m2)) - pnorm(-abs(z_score_m2))
-
-c(prob_m1, prob_m2)
-```
-
-```{r D8.2.21}
-# Given data
-x_bar <- 5.25  # sample mean
-mu_0 <- 5.5    # hypothesized population mean
-s <- 0.3       # population standard deviation
-n <- 16        # sample size
-
-# Calculate the t-statistic
-t_stat <- (x_bar - mu_0) / (s / sqrt(n))
-
-# Degrees of freedom
-df <- n - 1
-
-# Calculate the p-value for a two-tailed test
-p_value <- 2 * (1 - pt(abs(t_stat), df))
-t_stat
-p_value
-
-#Significance level
-alpha <- 0.01
-
-if (p_value < alpha) {
-  conclusion <- "Reject H0: True average differs from 5.5"
-} else {
-  conclusion <- "Fail to reject H0: True average doesn't differ from 5.5"
-}
-conclusion
-
-#Part (b)
-# New true mean
-mu_true <- 5.6
-
-# Calculate the non-centrality parameter
-delta <- (mu_true - mu_0) / (s / sqrt(n))
-
-# Calculate the power of the test (probability of detecting the departure)
-power <- 1 - pt(qt(1 - alpha/2, df), df, ncp = delta) + pt(qt(alpha/2, df), df, ncp = delta)
-power
-
-
-#Part (c)
-# Desired power and significance level
-desired_power <- 0.99
-alpha <- 0.01
-
-# Effect size (d) for delta
-d <- (mu_true - mu_0) / (s / sqrt(n))
-
-# Calculate the required sample size for given power
-
-library(pwr)
-sample_size <- pwr.t.test(d = d, sig.level = alpha, power = desired_power, type = "two.sample")$n
-ceiling (sample_size)
-```
-
-```{r D8.3.34}
-# Given data
-distances <- c(32.1, 30.6, 31.4, 30.4, 31.0, 31.9)
-n <- length(distances)
-x_bar <- mean(distances)  # Sample mean
-mu_0 <- 30  # Hypothesized population mean
-s <- sd(distances)  # Sample standard deviation
-alpha <- 0.01  # Significance level
-
-# Calculate the t-statistic
-t_stat <- (x_bar - mu_0) / (s / sqrt(n))
-
-# Degrees of freedom
-df <- n - 1
-
-# Calculate the p-value for a one-tailed test
-p_value <- 1 - pt(t_stat, df)
-t_stat
-p_value
-
-if (p_value < alpha) {
-  conclusion <- "Reject H0: True average stopping distance is greater than 30ft."
-} else {
-  conclusion <- "Fail to reject H0: True average stopping distance is equal to 30ft."
-}
-conclusion
-
-## Part (b)
-# Actual means for Type II error calculation
-mu_true_31 <- 31
-mu_true_32 <- 32
-
-# Non-centrality parameter for each mean
-delta_31 <- (mu_true_31 - mu_0) / (s / sqrt(n))
-delta_32 <- (mu_true_32 - mu_0) / (s / sqrt(n))
-
-# Calculate the Type II error probabilities (1 - power) for each mean
-beta_31 <- pt(qt(1 - alpha, df), df, ncp = delta_31)
-beta_32 <- pt(qt(1 - alpha, df), df, ncp = delta_32)
-
-c(beta_31, beta_32)
-
-## Part (c)
-
-# New sample standard deviation
-s_new <- 0.80
-
-# Non-centrality parameters for the new standard deviation
-delta_31_new <- (mu_true_31 - mu_0) / (s_new / sqrt(n))
-delta_32_new <- (mu_true_32 - mu_0) / (s_new / sqrt(n))
-
-# Calculate the Type II error probabilities for the new standard deviation
-beta_31_new <- pt(qt(1 - alpha, df), df, ncp = delta_31_new)
-beta_32_new <- pt(qt(1 - alpha, df), df, ncp = delta_32_new)
-
-c(beta_31_new, beta_32_new)
-
-## Part (d)
-
-# Desired power and Type II error probability
-desired_power <- 0.90
-alpha <- 0.01
-
-# Effect size (d) for delta when true mean is 31
-delta_size <- (mu_true_31 - mu_0) / (0.65)
-
-# Use the pwr.t.test function to calculate the required sample size
-library(pwr)
-sample_size <- pwr.t.test(d = delta_size, sig.level = alpha, power = desired_power, type = "one.sample")$n
-ceiling (sample_size)
-```
-
-```{r D8.4.48}
-# Given data
-n <- 51  # sample size
-x <- 41  # number of homes with problems
-p_hat <- x / n  # sample proportion
-p_0 <- 0.50  # hypothesized population proportion
-alpha <- 0.01  # significance level
-
-# Calculate the z-statistic
-z_stat <- (p_hat - p_0) / sqrt((p_0 * (1 - p_0)) / n)
-
-# Calculate the p-value for a one-tailed test
-p_value <- 1 - pnorm(z_stat)
-z_stat
-p_value
-
-if (p_value < alpha) {
-  conclusion <- "Reject H0: More than 50% of homes with Chinese drywall have electrical/environmental problems.."
-} else {
-  conclusion <- "Fail to reject H0: 50% of homes with Chinese drywall have electrical/environmental problems"
-}
-conclusion
-
-## Part (b)
-# Z-score for 99% confidence level
-z_alpha <- qnorm(1 - alpha)
-
-# Calculate the lower confidence bound
-lower_conf_bound <- p_hat - z_alpha * sqrt((p_hat * (1 - p_hat)) / n)
-lower_conf_bound
-
-## Part (c)
-# Actual true proportion for Type II error calculation
-p_true <- 0.80
-
-# Calculate the non-centrality parameter (delta)
-delta <- (p_true - p_0) / sqrt((p_0 * (1 - p_0)) / n)
-
-# Calculate the probability of failing to reject H0 (Type II error)
-beta <- pnorm(qnorm(1 - alpha) - delta)
-beta
-```
-
-```{r D9.1.6}
-# Given data
-x_bar <- 18.12  # Sample mean for modified mortar
-y_bar <- 16.87  # Sample mean for unmodified mortar
-s1 <- 1.6  # Standard deviation for modified mortar
-s2 <- 1.4  # Standard deviation for unmodified mortar
-m <- 40     # Sample size for modified mortar
-n <- 32     # Sample size for unmodified mortar
-alpha <- 0.01  # Significance level
-
-# Calculate the z-statistic for the difference in means
-z_stat <- (x_bar - y_bar) / sqrt((s1^2 / m) + (s2^2 / n))
-
-# Calculate the p-value for a one-tailed test
-p_value <- 1 - pnorm(z_stat)
-z_stat
-p_value
-
-if (p_value < alpha) {
-  conclusion <- "Reject H0: Modified mortar has a higher average tension bond strength than unmodified mortar"
-} else {
-  conclusion <- "Fail to reject H0: Unmodifier mortar has a higher average tension bond strength than unmodified mortar"
-}
-conclusion
-
-##Part (b)
-# True difference in means for Type II error calculation
-true_diff <- 1
-
-# Non-centrality parameter
-delta <- true_diff / sqrt((s1^2 / m) + (s2^2 / n))
-
-# Calculate the Type II error probability (beta)
-beta <- pnorm(qnorm(1 - alpha) - delta)
-beta
-
-##Part (c)
-
-# Desired power
-desired_power <- 0.90
-alpha_new <- 0.05
-
-# Effective size (d) for delta when true difference is 1
-d <- true_diff / sqrt((s1^2 / m) + (s2^2 / n))
-
-# Use the pwr package to calculate the required sample size
-library(pwr)
-sample_size <- pwr.t.test(d = d, sig.level = alpha_new, power = desired_power, type = "two.sample")$n
-ceiling (sample_size)
-
-## part (d)
-# Pooled standard deviation (when s1 and s2 are unknown)
-s_pooled <- sqrt(((m - 1) * s1^2 + (n - 1) * s2^2) / (m + n - 2))
-
-# Calculate the t-statistic for the test
-t_stat_unknown <- (x_bar - y_bar) / (s_pooled * sqrt(1/m + 1/n))
-
-# Degrees of freedom
-df_unknown <- m + n - 2
-
-# Calculate the p-value for a one-tailed t-test
-p_value_unknown <- 1 - pt(t_stat_unknown, df_unknown)
-t_stat_unknown
-p_value_unknown
-```
-
-```{r D9.2.24}
-
-##Data 
-
-# Blackbirds Experimental Location
-t_blackbirds_exptl <- 13.4
-se_blackbirds_exptl <- 2.05
-n_blackbirds_exptl <- 65
-
-# Blackbirds Natural Location
-t_blackbirds_natural <- 9.7
-se_blackbirds_natural <- 1.76
-n_blackbirds_natural <- 50
-
-#Silvereyes Experimental location
-t_silvereyes_exptl <- 49.4
-se_silvereyes_exptl <- 4.78
-n_silvereyes_exptl <- 34
-
-# Silvereyes Natural Location
-t_silvereyes_natural <- 38.4
-se_silvereyes_natural <- 5.06
-n_silvereyes_natural <- 46
-
-#Part a
-#Upper Confidence Bound for Blackbirds at Experimental Location
-
-library(stats)
-alpha <- 0.05  # 95% confidence level
-t_crit <- qt(1 - alpha, df = n_blackbirds_exptl - 1)
-upper_bound <- t_blackbirds_exptl + t_crit * se_blackbirds_exptl
-upper_bound
-
-#Part b
-#Hypothesis Test: Does Blackbirds' Time at Experimental Location Exceed Natural Location?
-
-# Hypotheses
-# H0: mu_blackbirds_exptl <= mu_blackbirds_natural
-# HA: mu_blackbirds_exptl > mu_blackbirds_natural
-
-t_stat <- (t_blackbirds_exptl - t_blackbirds_natural) / sqrt(se_blackbirds_exptl^2/n_blackbirds_exptl + se_blackbirds_natural^2/n_blackbirds_natural)
-df <- min(n_blackbirds_exptl - 1, n_blackbirds_natural - 1)
-p_value <- 1 - pt(t_stat, df)
-print ("t_statistic && p_value: ")
-list(t_statistic = t_stat, p_value = p_value)
-
-#Part (c)
-#Confidence Interval for Difference Between Silvereyes and Blackbirds at Natural Location
-diff_means <- t_silvereyes_natural - t_blackbirds_natural
-se_diff <- sqrt(se_silvereyes_natural^2/n_silvereyes_natural + se_blackbirds_natural^2/n_blackbirds_natural)
-t_crit_diff <- qt(1 - alpha/2, df = min(n_silvereyes_natural - 1, n_blackbirds_natural - 1))
-ci_lower <- diff_means - t_crit_diff * se_diff
-ci_upper <- diff_means + t_crit_diff * se_diff
-
-#Confidence interval
-list(mean_difference = diff_means, ci_lower = ci_lower, ci_upper = ci_upper)
-
-#Point Estimate with Standard Error for Difference Between Silvereyes and Blackbirds at Natural Location
-diff_means <- t_silvereyes_natural - t_blackbirds_natural
-se_diff <- sqrt(se_silvereyes_natural^2/n_silvereyes_natural + se_blackbirds_natural^2/n_blackbirds_natural)
-
-list(mean_difference = diff_means, standard_error = se_diff)
-```
-
-```{r D9.3.40}
-## Data Entry
-
-# Lactation (L) and Postweaning (P) TBBMC data
-L <- c(1928, 2549, 2825, 1924, 1628, 2175, 2114, 2621, 1843, 2541)
-P <- c(2126, 2885, 2895, 1942, 1750, 2184, 2164, 2626, 2006, 2627)
-diff <- P - L  # Differences (P - L)
-n <- length(diff)
-
-#Part (a)
-
-## (a) Hypothesis Test: Does Postweaning TBBMC Exceed Lactation by More Than 25g?
-
-library(stats)
-alpha <- 0.05
-mu_0 <- 25  # Hypothesized difference
-x_bar <- mean(diff)
-s <- sd(diff)
-t_stat <- (x_bar - mu_0) / (s / sqrt(n))
-df <- n - 1
-p_value <- 1 - pt(t_stat, df)
-
-list(mean_difference = x_bar, t_statistic = t_stat, p_value = p_value)
-
-if (p_value < alpha) {
-  conclusion <- "Reject H0: There is significant evidence that the true average TBBMC postweaning exceeds lactation by more than 25g."
-} else {
-  conclusion <- "Fail to reject H0: We do not have strong enough evidence to claim that the increase is more than 25g"
-}
-conclusion
-
-## (b) Upper Confidence Bound for True Average Difference
-conf_level <- 0.95
-t_crit <- qt(conf_level, df)
-upper_bound <- x_bar + t_crit * (s / sqrt(n))
-upper_bound
-
-## (c) Two-Sample t Test Comparison
-t_test_result <- t.test(P, L, var.equal = TRUE, alternative = "greater")
-t_test_result
-
-### Explanation:
-print ("The paired t-test in (a) takes into account the natural pairing of measurements within subjects, whereas the two-sample t-test assumes independent samples. From two sample test, it leads to conclusion that we fail to reject Null Hypothesis since p_value is higher than alpha. The reason maybe due to the loss of paired structure, affecting variability and statistical power.")
-```
-
-```{r D9.4.50}
-#Data
-# Observed data
-n_perdue <- 80
-contaminated_perdue <- 35
-non_contaminated_perdue <- n_perdue - contaminated_perdue
-
-n_tyson <- 80
-contaminated_tyson <- 66
-non_contaminated_tyson <- n_tyson - contaminated_tyson
-
-# Sample proportions
-p_hat_perdue <- non_contaminated_perdue / n_perdue
-p_hat_tyson <- non_contaminated_tyson / n_tyson
-
-## (a) Hypothesis Test: Difference in True Proportion of Non-Contaminated Broilers
-
-library(stats)
-# H0: p_perdue = p_tyson
-# HA: p_perdue ≠ p_tyson
-
-p_hat_diff <- p_hat_perdue - p_hat_tyson
-p_pool <- (non_contaminated_perdue + non_contaminated_tyson) / (n_perdue + n_tyson)
-se_pool <- sqrt(p_pool * (1 - p_pool) * (1/n_perdue + 1/n_tyson))
-
-z_stat <- p_hat_diff / se_pool
-p_value <- 2 * (1 - pnorm(abs(z_stat)))
-
-list(z_statistic = z_stat, p_value = p_value)
-alpha <- 0.01 #significance level
-if (p_value < alpha) {
-  conclusion <- "Reject H0: True proportion of non- contaminated Perdue broilers differs from that for the Tyson brand."
-} else {
-  conclusion <- "Fail to reject H0: True proportion of non- contaminated Perdue broilers does not differ from that for the Tyson brand"
-}
-conclusion
-
-## (b) Power Analysis: Probability of Rejecting H₀ When True Proportions Are 0.50 and 0.25
-
-# Given true proportions
-p_perdue_true <- 0.50
-p_tyson_true <- 0.25
-p_diff_true <- p_perdue_true - p_tyson_true
-
-se_true <- sqrt((p_perdue_true * (1 - p_perdue_true) / n_perdue) + 
-                (p_tyson_true * (1 - p_tyson_true) / n_tyson))
-
-z_beta <- (p_diff_true / se_true) - qnorm(1 - 0.01/2)  # Two-tailed test at alpha = 0.01
-power <- 1 - pnorm(z_beta)
-
-list(power = power)
-
-```
-
-```{r D9.5.63}
-# Given data
-s_control <- 32  # Standard deviation for control group
-n_control <- 23  # Sample size for control group
-
-s_low_dose <- 54  # Standard deviation for low-dose group
-n_low_dose <- 20  # Sample size for low-dose group
-
-library(stats)
-# H0: sigma^2_low_dose = sigma^2_control (Equal variances)
-# HA: sigma^2_low_dose > sigma^2_control (Greater variability in low-dose group)
-
-f_stat <- (s_low_dose^2) / (s_control^2)
-df_num <- n_low_dose - 1
-df_den <- n_control - 1
-p_value <- 1 - pf(f_stat, df_num, df_den)
-
-list(f_statistic = f_stat, p_value = p_value)
-
-if (p_value < 0.05) {
-  conclusion <- "Reject H0: There is significant evidence that the low-dose group has greater variability in weight gain"
-} else {
-  conclusion <- "Fail to reject H0:No significant evidence of greater variability in the low-dose group "
-}
-conclusion
-```
-
-```{r D9.5.66}
-# Given data
-s_cotton <- 0.79   # Standard deviation for Cotton fabric
-n_cotton <- 10     # Sample size for Cotton fabric
-
-s_triacetate <- 3.59  # Standard deviation for Triacetate fabric
-n_triacetate <- 10    # Sample size for Triacetate fabric
-
-## 95% Upper Confidence Bound for the Ratio of Standard Deviations
-
-library(stats)
-alpha <- 0.05  # 95% confidence level
-f_stat <- (s_triacetate^2) / (s_cotton^2)
-df_num <- n_triacetate - 1
-df_den <- n_cotton - 1
-
-f_crit <- qf(1 - alpha, df_num, df_den)
-upper_bound <- f_stat / f_crit
-
-list(f_statistic = f_stat, upper_confidence_bound = upper_bound)
+n = 4722
+#Huge sample so we can approximate 
+pbar = .15
+qbar = 1 - pbar
+alpha = 1 - .99
+z_alpha = qnorm(alpha/2, lower.tail = FALSE);z_alpha
+
+CL_Lower = pbar - z_alpha*sqrt((qbar*pbar)/n);CL_Lower
+CL_Upper = pbar + z_alpha*sqrt((qbar*pbar)/n);CL_Upper
 
 
 ```
+##Q4 Devore 2nd edition 7.3.36
+The n = 26 observations on escape time given in Exercise 36 of Chapter 1 give a sample mean and sample standard deviation of 370.69 and 24.36, respectively.
+a. Calculate an upper confidence bound for population
+mean escape time using a confidence level of 95%.
+b. Calculate an upper prediction bound for the escape time of a single additional worker using a prediction level of 95%. How does this bound compare with the confidence
+bound of part (a)?
+c. Suppose that two additional workers will be chosen to
+participate in the simulated escape exercise. Denote their escape times by X27 and X28, and let Xnew denote the aver- age of these two values. Modify the formula for a PI for a single x value to obtain a PI for Xnew, and calculate a 95% two-sided interval based on the given escape data.
+
+```{r 7.3.36 a}
+n = 26
+xbar = 370.69
+sd = 24.36
+
+#Cant use CLT so must use T distrobution
+
+alpha = 1 - .95
+#We care about the upper tail
+T_alpha = qt(alpha,n - 1, lower.tail = FALSE);T_alpha
+CI_Upper = xbar + T_alpha*(sd/sqrt(n));CI_Upper
+```
+
+```{r 7.3.36 b}
+n = 26
+xbar = 370.69
+sd = 24.36
+
+#Cant use CLT so must use T distrobution
+
+alpha = 1 - .95
+#We care about the upper tail
+T_alpha = qt(alpha,n - 1, lower.tail = FALSE);T_alpha
+SE = sd*sqrt(1+(1/n))
+PI_Upper = xbar + T_alpha*SE;PI_Upper
+#This bound is higher than the CI in part a. The probability would be lower as the area is smaller.
+```
+```{r 7.3.36 c}
+#Not sure what to do here....
+```
+
+##Q5 Devore 2nd edition 8.1.13
+Let X1,..., Xn denote a random sample from a normal population distribution with a known value of s.
+a. For testing the hypotheses H0: m = m0 versus Ha: m > m0 (where m0 is a fixed number), show that the
+test with test statistic X and rejection region
+x >= m0 + 2.33*s/sqrt(n) has significance level .01.
+
+b. Suppose the procedure of part (a) is used to test H0:m <= m0 versus Ha:m > m0. If m0 = 100,n = 25, and s = 5, what is the probability of committing a type I error when m = 99? When m = 98? In general, what can be said about the probability of a type I error when the actual value of m is less than m ?  In general, what can be said about the probability of a type I error when the actual value of m is less than m0 ?Verify your assertion.
+```{r 8.1.13 a}
+#Because it is a normal random value and known sigma we can use the z distrobution.
+#Lets say alpha is 0.01
+alpha = 0.01
+z_alpha =qnorm(0.01,lower.tail = FALSE);z_alpha
+#also
+alpha = 1 - pnorm(2.33);alpha
+#If we pick any m0 or n that would would work under CLT, we can prove that x would be at least equal or more than z_alpha. Therefore this test has a significance of .01
+```
+```{r 8.1.13 b}
+#H0:m <= m0
+#Ha:m > m0
+mu0 = 100
+n = 25
+s = 5
+#They state it is normal.
+#if mu is 99
+mu = 99
+xbar = mu0 + 2.33*(s/sqrt(n))
+z_test = (xbar - mu)/(s/sqrt(n))
+#Type 1 error:
+probability = 1 - pnorm(z_test);probability
+#Type 1 error with mu = 98
+mu = 98
+z_test = (xbar - mu)/(s/sqrt(n))
+probability = 1 - pnorm(z_test);probability
+
+#The probability of a Type I error decreases as the actual value of mu becomes less than mu0.
+```
+##Q6 Devore 2nd edition 8.2.21
+The true average diameter of ball bearings of a certain type is supposed to be .5 in. A one-sample t test will be carried out to see whether this is the case. What conclusion is appropriate in each of the following situations?
+a. n=13,t=1.6,alpha=.05
+b. n=13,t=21.6,alpha=.05
+c. n=25,t=22.6,alpha=.01 
+d. n=25,t=23.9
+
+```{r 8.2.21}
+xbar = 0.5
+#H0 = 0.5
+#part a
+n = 13
+t = 1.6
+alpha = .05
+
+t_test = qt((1-alpha/2),n-1);t_test
+#This is greater than t so we fail to reject H0
+
+#part b
+n = 13
+t = 21.6
+alpha = .05
+
+t_test = qt((1-alpha/2),n-1);t_test
+#This is less than t so we reject H0
+
+#part c
+n = 25
+t = 22.6
+alpha = .01
+
+t_test = qt((1-alpha/2),n-1);t_test
+#This is less than t so we reject H0
+
+#part d
+n = 25
+t = 23.9
+alpha = .05
+
+t_test = qt((1-alpha/2),n-1);t_test
+#This is less than t so we reject H0
+#Because this occurs for .05 and t is so large. This is happen for each alpha. 
+
+```
+##Q7 Devore 2nd edition 8.3.34
+doesn't exist??
+
+##More Problems here 
+continue to solve the following problems in  the format of the layout of Q1.
+
+Devore BOOK : 
+7.2.13 
+7.2.20
+7.3.36
+8.1.13
+8.2.21
+8.3.34
+8.4.48
+9.1.6
+9.2.24
+9.3.40
+9.4.50
+9.5.63
+9.5.66
